@@ -3,6 +3,7 @@ import '@fontsource-variable/unbounded';
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
+import { href } from '../lib/url';
 
 interface Props {
   title: string;
@@ -12,7 +13,7 @@ interface Props {
 }
 const { title, description, ogImage = '/og/home.png', bodyClass = '' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogUrl = new URL(ogImage, Astro.site);
+const ogUrl = new URL(href(ogImage), Astro.site);
 ---
 <!doctype html>
 <html lang="ru">
@@ -30,8 +31,8 @@ const ogUrl = new URL(ogImage, Astro.site);
     <meta property="og:locale" content="ru_RU" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#05060f" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={href('/sitemap-index.xml')} />
     <slot name="head" />
   </head>
   <body class={bodyClass}>

@@ -8,14 +8,15 @@ import TwinsControls from '../components/controls/TwinsControls';
 import GravityControls from '../components/controls/GravityControls';
 import GpsControls from '../components/controls/GpsControls';
 import '../styles/story.css';
+import { href } from '../lib/url';
 ---
 <Base
   title="Время относительно — теория относительности в 3D"
   description="Кинематографичный интерактивный рассказ о теории относительности Эйнштейна: световые часы, близнецы, кривизна пространства, гравитационная линза и GPS."
 >
   <header class="site-header">
-    <a class="brand" href="/">Время относительно</a>
-    <nav><a href="/articles">Статьи</a></nav>
+    <a class="brand" href={href('/')}>Время относительно</a>
+    <nav><a href={href('/articles')}>Статьи</a></nav>
   </header>
 
   <StoryCanvas client:only="react" />
@@ -56,7 +57,7 @@ import '../styles/story.css';
       <p>Скорость замедляет время. Масса гнёт пространство и время. Свет огибает звёзды, а навигатор в кармане каждую секунду считает по Эйнштейну.</p>
       <p>Нет единого «сейчас». Есть ваше время и моё.</p>
       <p class="finale-links">
-        <a class="more" href="/articles">Все статьи</a>
+        <a class="more" href={href('/articles')}>Все статьи</a>
         <a class="more more-ghost" href="#intro">В начало</a>
       </p>
       <p class="credit">Сделано <a href="https://github.com/OreSameXD" rel="author noopener" target="_blank">OreSameXD</a></p>

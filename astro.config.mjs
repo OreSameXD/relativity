@@ -8,7 +8,9 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 export default defineConfig({
-  site: 'https://gargantua.space',
+  // GitHub Pages: сайт в подпапке репозитория. При переезде на свой домен base убрать.
+  site: 'https://oresamexd.github.io',
+  base: '/relativity',
   integrations: [react(), mdx(), sitemap()],
   markdown: {
     // Формулы рендерятся на сборке; на клиент KaTeX не уезжает.

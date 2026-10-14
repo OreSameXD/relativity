@@ -2,13 +2,14 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import '../../styles/article.css';
+import { href } from '../../lib/url';
 
 const articles = (await getCollection('articles')).filter((a) => !a.data.draft).sort((a, b) => a.data.order - b.data.order);
 ---
 <Base title="Статьи — Время относительно" description="Оглавление статей о теории относительности: замедление времени, близнецы, кривизна пространства-времени, гравитационная линза, GPS." ogImage="/og/articles.png" bodyClass="article-page">
   <header class="site-header">
-    <a class="brand" href="/">Время относительно</a>
-    <nav><a href="/">История</a></nav>
+    <a class="brand" href={href('/')}>Время относительно</a>
+    <nav><a href={href('/')}>История</a></nav>
   </header>
 
   <main class="list-wrap">
@@ -19,7 +20,7 @@ const articles = (await getCollection('articles')).filter((a) => !a.data.draft).
     <ol class="list">
       {articles.map((a) => (
         <li>
-          <a href={`/articles/${a.id}`}>
+          <a href={href(`/articles/${a.id}`)}>
             <span class="num">{String(a.data.order).padStart(2, '0')}</span>
             <span class="body">
               <span class="name">{a.data.title}</span>
@@ -31,7 +32,7 @@ const articles = (await getCollection('articles')).filter((a) => !a.data.draft).
     </ol>
     {articles.length < 6 && <p class="muted">Остальные статьи появятся по мере готовности.</p>}
 
-    <p style="margin-top: var(--space-5)"><a class="back" href="/">← Назад к истории</a></p>
+    <p style="margin-top: var(--space-5)"><a class="back" href={href('/')}>← Назад к истории</a></p>
   </main>
 </Base>
 

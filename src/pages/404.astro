@@ -1,16 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
+import { href } from '../lib/url';
 ---
 <Base title="Страница не найдена — Время относительно" description="Такой страницы нет. Вернитесь к истории или к оглавлению статей.">
   <header class="site-header">
-    <a class="brand" href="/">Время относительно</a>
-    <nav><a href="/articles">Статьи</a></nav>
+    <a class="brand" href={href('/')}>Время относительно</a>
+    <nav><a href={href('/articles')}>Статьи</a></nav>
   </header>
   <main class="nf">
     <p class="kicker">404</p>
     <h1>Этой страницы нет ни в одной системе отсчёта</h1>
     <p class="lead">Возможно, ссылка устарела или адрес набран с ошибкой.</p>
-    <p class="links"><a class="more" href="/">К истории</a><a class="more more-ghost" href="/articles">К статьям</a></p>
+    <p class="links"><a class="more" href={href('/')}>К истории</a><a class="more more-ghost" href={href('/articles')}>К статьям</a></p>
   </main>
 </Base>
 <style>

@@ -7,17 +7,18 @@ interface Props {
   kicker?: string;
   align?: 'left' | 'center';
 }
+import { href } from '../../lib/url';
 const { index, id, title, article, kicker, align = 'left' } = Astro.props;
 ---
 <!-- id с префиксом: браузер не должен сам прыгать к #clocks, хэшем управляет scroll.ts -->
-<section class:list={['chapter', `align-${align}`]} data-chapter={index} data-id={id} id={`chapter-${id}`} style={`--fallback: url(/fallback/${id}.jpg)`}>
+<section class:list={['chapter', `align-${align}`]} data-chapter={index} data-id={id} id={`chapter-${id}`} style={`--fallback: url(${href(`/fallback/${id}.jpg`)})`}>
   <div class="copy">
     <slot name="touch" />
     <div class="copy-inner">
       {kicker && <p class="kicker">{kicker}</p>}
       {index === 0 ? <h1 class="title">{title}</h1> : <h2 class="title">{title}</h2>}
       <div class="lead"><slot /></div>
-      {article && <a class="more" href={article}>Подробнее<span aria-hidden="true"> →</span></a>}
+      {article && <a class="more" href={href(article)}>Подробнее<span aria-hidden="true"> →</span></a>}
     </div>
     <div class="controls"><slot name="controls" /></div>
     <p class="nowebgl-note">Интерактив этой главы требует WebGL. Это статичный кадр сцены.</p>

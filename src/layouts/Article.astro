@@ -3,6 +3,7 @@ import 'katex/dist/katex.min.css';
 import Base from './Base.astro';
 import '../styles/article.css';
 import type { MarkdownHeading } from 'astro';
+import { href } from '../lib/url';
 
 interface NavLink {
   href: string;
@@ -24,13 +25,13 @@ interface Props {
 
 const { title, description, phenomenon, lead, updated, slug, headings, chapterId, next, prev } = Astro.props;
 const toc = headings.filter((h) => h.depth === 2);
-const backHref = chapterId ? `/#${chapterId}` : '/';
+const backHref = href(chapterId ? `/#${chapterId}` : '/');
 const updatedText = updated.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 <Base title={`${title} — Время относительно`} description={description} ogImage={`/og/articles/${slug}.png`} bodyClass="article-page">
   <header class="site-header">
-    <a class="brand" href="/">Время относительно</a>
-    <nav><a href="/articles">Статьи</a></nav>
+    <a class="brand" href={href('/')}>Время относительно</a>
+    <nav><a href={href('/articles')}>Статьи</a></nav>
   </header>
 
   <div class="article-header">
@@ -67,13 +68,13 @@ const updatedText = updated.toLocaleDateString('ru-RU', { day: 'numeric', month:
 
       <nav class="article-nav" aria-label="Навигация по статьям">
         {next ? (
-          <a href={next.href}><span class="label">Следующее явление →</span><span class="name">{next.name}</span></a>
+          <a href={href(next.href)}><span class="label">Следующее явление →</span><span class="name">{next.name}</span></a>
         ) : (
-          <a href="/articles"><span class="label">Все статьи →</span><span class="name">Оглавление</span></a>
+          <a href={href('/articles')}><span class="label">Все статьи →</span><span class="name">Оглавление</span></a>
         )}
         <a href={backHref}><span class="label">← Назад к истории</span><span class="name">Глава на главной</span></a>
       </nav>
-      {prev && <p style="margin-top: 16px; font-size: 0.9rem; color: var(--muted)">Предыдущее: <a href={prev.href} style="color: var(--text)">{prev.name}</a></p>}
+      {prev && <p style="margin-top: 16px; font-size: 0.9rem; color: var(--muted)">Предыдущее: <a href={href(prev.href)} style="color: var(--text)">{prev.name}</a></p>}
     </div>
   </div>
 </Base>
