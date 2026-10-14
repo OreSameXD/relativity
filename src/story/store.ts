@@ -1,0 +1,93 @@
+import { createStore } from 'zustand/vanilla';
+import { useStore } from 'zustand';
+
+export type Quality = 'high' | 'medium' | 'low';
+
+/**
+ * Объект камеры мутируется GSAP напрямую (без setState), сцена читает его в useFrame.
+ * Это сознательно вне реактивного состояния: меняется каждый кадр.
+ */
+export interface CamState {
+  /** Параметр кривой 0..1; якорь главы N при t = N/(глав-1) */
+  t: number;
+  look: { x: number; y: number; z: number };
+  /** 0 в удержании, 1 в середине перелёта (для FOV и пыли) */
+  travel: number;
+}
+
+/** Мутируемый объект (как cam): GSAP твинит strength, указатель пишет x/y. Не пересоздавать. */
+export interface LensState {
+  /** Цель положения чёрной дыры в UV экрана (0..1, y вверх) */
+  x: number;
+  y: number;
+  /** 0..1, твинится таймлайном: вкл/выкл эффекта */
+  strength: number;
+}
+
+export interface StoryState {
+  chapter: number;
+  progress: number;
+  quality: Quality;
+  /** Потолок качества для устройства: телефон не поднимается выше medium */
+  maxQuality: Quality;
+  reducedMotion: boolean;
+  webgl: boolean;
+  cam: CamState;
+  lens: LensState;
+  /** Масса чёрной дыры 0..1 → радиус Эйнштейна (реактивно: нужно UI) */
+  lensMass: number;
+  setChapter: (n: number) => void;
+  setProgress: (p: number) => void;
+  setQuality: (q: Quality) => void;
+  setMaxQuality: (q: Quality) => void;
+  setWebgl: (ok: boolean) => void;
+  setReducedMotion: (v: boolean) => void;
+  setLensTarget: (x: number, y: number) => void;
+  setLensMass: (m: number) => void;
+}
+
+export const storyStore = createStore<StoryState>((set, get) => ({
+  chapter: 0,
+  progress: 0,
+  quality: 'high',
+  maxQuality: 'high',
+  reducedMotion: false,
+  webgl: true,
+  cam: { t: 0, look: { x: 0, y: 0, z: -60 }, travel: 0 },
+  lens: { x: 0.64, y: 0.52, strength: 0 },
+  lensMass: 0.5,
+  setChapter: (chapter) => set({ chapter }),
+  setProgress: (progress) => set({ progress }),
+  setQuality: (quality) => set({ quality }),
+  setMaxQuality: (maxQuality) => set({ maxQuality }),
+  setWebgl: (webgl) => set({ webgl }),
+  setReducedMotion: (reducedMotion) => set({ reducedMotion }),
+  setLensTarget: (x, y) => {
+    const { lens } = get();
+    lens.x = x;
+    lens.y = y;
+  },
+  setLensMass: (lensMass) => set({ lensMass }),
+}));
+
+export function useStory<T>(selector: (s: StoryState) => T): T {
+  return useStore(storyStore, selector);
+}
+
+/** Начальный уровень качества по устройству. */
+export function detectQuality(): Quality {
+  if (typeof window === 'undefined') return 'high';
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+  const narrow = window.innerWidth < 768;
+  return coarse || narrow ? 'medium' : 'high';
+}
+
+export function hasWebGL(): boolean {
+  if (typeof document === 'undefined') return false;
+  try {
+    const c = document.createElement('canvas');
+    return !!(c.getContext('webgl2') || c.getContext('webgl'));
+  } catch {
+    return false;
+  }
+}

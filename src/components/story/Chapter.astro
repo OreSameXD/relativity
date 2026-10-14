@@ -1,0 +1,24 @@
+---
+interface Props {
+  index: number;
+  id: string;
+  title: string;
+  article?: string;
+  kicker?: string;
+  align?: 'left' | 'center';
+}
+const { index, id, title, article, kicker, align = 'left' } = Astro.props;
+---
+<section class:list={['chapter', `align-${align}`]} data-chapter={index} id={id}>
+  <div class="copy">
+    <slot name="touch" />
+    <div class="copy-inner">
+      {kicker && <p class="kicker">{kicker}</p>}
+      {index === 0 ? <h1 class="title">{title}</h1> : <h2 class="title">{title}</h2>}
+      <div class="lead"><slot /></div>
+      {article && <a class="more" href={article}>Подробнее<span aria-hidden="true"> →</span></a>}
+    </div>
+    <div class="controls"><slot name="controls" /></div>
+  </div>
+  <div class="fallback" aria-hidden="true"></div>
+</section>

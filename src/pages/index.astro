@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import Chapter from '../components/story/Chapter.astro';
+import StoryCanvas from '../scene/StoryCanvas';
+import LensControls from '../components/controls/LensControls';
+import '../styles/story.css';
+---
+<Base
+  title="Время относительно — теория относительности в 3D"
+  description="Кинематографичный интерактивный рассказ о теории относительности Эйнштейна: световые часы, близнецы, кривизна пространства, гравитационная линза и GPS."
+>
+  <header class="site-header">
+    <a class="brand" href="/">Время относительно</a>
+    <nav><a href="/articles">Статьи</a></nav>
+  </header>
+
+  <StoryCanvas client:only="react" />
+  <div id="fade"></div>
+
+  <div id="story">
+    <Chapter index={0} id="intro" title="Время относительно" align="center">
+      <p>История о том, почему у каждого из нас своё время.</p>
+    </Chapter>
+
+    <Chapter index={1} id="clocks" title="Световые часы" kicker="Глава 1" article="/articles/time-dilation">
+      <p>Часы, которые летят, тикают медленнее. Не кажутся — <strong>тикают</strong>.</p>
+    </Chapter>
+
+    <Chapter index={2} id="twins" title="Парадокс близнецов" kicker="Глава 2" article="/articles/twin-paradox">
+      <p>Один улетает, другой остаётся. Встречаются люди разного возраста.</p>
+    </Chapter>
+
+    <Chapter index={3} id="gravity" title="Гравитация гнёт пространство" kicker="Глава 3" article="/articles/curved-spacetime">
+      <p>Масса прогибает пространство-время. Планеты просто катятся по изгибу.</p>
+    </Chapter>
+
+    <Chapter index={4} id="lens" title="Гравитационная линза" kicker="Глава 4" article="/articles/gravitational-lensing">
+      <div class="touch-area" slot="touch" aria-hidden="true"></div>
+      <p>Свет далёких звёзд огибает чёрную дыру и собирается в кольцо. <strong>Двигайте её.</strong></p>
+      <LensControls client:idle slot="controls" />
+    </Chapter>
+
+    <Chapter index={5} id="gps" title="Зачем это в жизни: GPS" kicker="Глава 5" article="/articles/gps">
+      <p>Часы на спутниках убегают на 38 микросекунд в сутки. Без поправки навигатор врал бы на километры.</p>
+    </Chapter>
+
+    <Chapter index={6} id="finale" title="Время относительно" align="center">
+      <p>Нет единого «сейчас». Есть ваше время и моё.</p>
+      <p><a class="more" href="/articles">Все статьи</a></p>
+      <p class="credit">Сделано <a href="#" rel="author">root39</a></p>
+    </Chapter>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true"><span>Листайте</span><span class="line"></span></div>
+</Base>
+
+<script>
+  import { initStory } from '../story/scroll';
+  const root = document.getElementById('story');
+  if (root) initStory(root);
+</script>
+
+<style>
+  .credit { margin-top: var(--space-4); color: var(--muted); font-size: 0.9rem; }
+  .credit a { color: var(--text); pointer-events: auto; }
+</style>
