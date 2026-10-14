@@ -6,6 +6,7 @@ import LensControls from '../components/controls/LensControls';
 import LightClockControls from '../components/controls/LightClockControls';
 import TwinsControls from '../components/controls/TwinsControls';
 import GravityControls from '../components/controls/GravityControls';
+import GpsControls from '../components/controls/GpsControls';
 import '../styles/story.css';
 ---
 <Base
@@ -48,6 +49,7 @@ import '../styles/story.css';
 
     <Chapter index={5} id="gps" title="Зачем это в жизни: GPS" kicker="Глава 5" article="/articles/gps">
       <p>Часы на спутниках убегают на 38 микросекунд в сутки. Без поправки навигатор врал бы на километры.</p>
+      <GpsControls client:idle slot="controls" />
     </Chapter>
 
     <Chapter index={6} id="finale" title="Время относительно" align="center">

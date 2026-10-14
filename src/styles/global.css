@@ -44,6 +44,30 @@ button { font: inherit; color: inherit; }
 .seg-btn:hover:not([aria-pressed='true']) { color: var(--ice); }
 .btn-ghost:disabled { opacity: 0.45; cursor: default; }
 
+/* Тумблер */
+.switch { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; background: transparent; border: 0; color: var(--text); padding: 0; }
+.switch-track { width: 46px; height: 26px; border-radius: 999px; background: color-mix(in srgb, var(--muted) 35%, transparent); position: relative; transition: background var(--dur-fast); flex: none; }
+.switch-track::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--ice); transition: transform var(--dur-fast) var(--ease-out); }
+.switch[aria-checked='true'] .switch-track { background: var(--violet); }
+.switch[aria-checked='true'] .switch-track::after { transform: translateX(20px); }
+.switch-label { font-size: 0.95rem; }
+
+/* Карта GPS */
+.gps-map { display: block; width: 100%; height: auto; border-radius: 10px; background: #070a1c; }
+.gps-map .street { stroke: #1b2250; stroke-width: 1; }
+.gps-map .avenue { stroke: #232c66; stroke-width: 2.5; }
+.gps-map .you { fill: var(--ice); }
+.gps-map .you-ring { fill: none; stroke: var(--ice); stroke-opacity: 0.5; }
+.gps-map .ghost { fill: var(--warm); }
+.gps-map .ghost-ring { fill: none; stroke: var(--warm); stroke-opacity: 0.6; }
+.gps-map .link { stroke: var(--warm); stroke-dasharray: 4 4; stroke-opacity: 0.7; }
+.gps-map .label { fill: var(--muted); font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.06em; }
+.gps-map .scale { stroke: var(--muted); stroke-width: 2; }
+.gps-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 0.85rem; }
+.gps-stats .label { display: block; color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.gps-stats .num { font-size: 1.1rem; color: var(--ice); }
+.gps-stats .num.warm { color: var(--warm); }
+
 /* Шапка сайта (общая для истории и статей) */
 .site-header {
   position: fixed; inset: 0 0 auto 0; z-index: 3;

@@ -77,6 +77,16 @@ html.no-webgl .copy { opacity: 1 !important; transform: none !important; }
 /* prefers-reduced-motion: текст просто виден */
 .is-reduced .copy { opacity: 1 !important; transform: none !important; }
 
+/* Невысокие экраны: заголовки и панели компактнее, чтобы влезали в кадр */
+@media (max-height: 840px) and (min-width: 768px) {
+  .title { font-size: clamp(1.8rem, 4vw, 3rem); }
+  .lead { font-size: 1.05rem; margin-top: var(--space-2); }
+  .more { margin-top: var(--space-2); padding: 9px 14px; }
+  .controls { margin-top: var(--space-2); }
+  .panel { padding: 12px 14px; gap: 8px; }
+  .copy { padding-top: 64px; padding-bottom: 24px; }
+}
+
 @media (max-width: 767px) {
   .copy { justify-content: flex-end; padding-bottom: 72px; }
   .align-center .copy { justify-content: center; }

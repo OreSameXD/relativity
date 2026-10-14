@@ -52,6 +52,8 @@ export interface StoryState {
   /** Глава 3: массы на сетке (мировые координаты x, z) и выбранный тип */
   gravityMasses: Array<{ x: number; z: number; kind: 'star' | 'hole' }>;
   gravityKind: 'star' | 'hole';
+  /** Глава 5: релятивистская поправка в приёмнике включена */
+  gpsCorrection: boolean;
   setChapter: (n: number) => void;
   setProgress: (p: number) => void;
   setQuality: (q: Quality) => void;
@@ -71,6 +73,7 @@ export interface StoryState {
   setGravityKind: (k: 'star' | 'hole') => void;
   addGravityMass: (x: number, z: number) => void;
   clearGravityMasses: () => void;
+  setGpsCorrection: (on: boolean) => void;
 }
 
 export const storyStore = createStore<StoryState>((set, get) => ({
@@ -93,6 +96,7 @@ export const storyStore = createStore<StoryState>((set, get) => ({
   twinsSim: { progress: 0, earthYears: 0, shipYears: 0 },
   gravityMasses: [],
   gravityKind: 'star',
+  gpsCorrection: true,
   setChapter: (chapter) => set({ chapter }),
   setProgress: (progress) => set({ progress }),
   setQuality: (quality) => set({ quality }),
@@ -124,6 +128,7 @@ export const storyStore = createStore<StoryState>((set, get) => ({
       return { gravityMasses: next.length > 6 ? next.slice(next.length - 6) : next };
     }),
   clearGravityMasses: () => set({ gravityMasses: [] }),
+  setGpsCorrection: (gpsCorrection) => set({ gpsCorrection }),
   resetTwins: () => {
     const sim = get().twinsSim;
     sim.progress = 0;
