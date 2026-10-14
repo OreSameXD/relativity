@@ -13,6 +13,8 @@ export interface CamState {
   look: { x: number; y: number; z: number };
   /** 0 в удержании, 1 в середине перелёта (для FOV и пыли) */
   travel: number;
+  /** Фаза перелёта к текущей главе: 0 в начале, 1 в конце и всё удержание */
+  phase: number;
 }
 
 /** Мутируемый объект (как cam): GSAP твинит strength, указатель пишет x/y. Не пересоздавать. */
@@ -83,7 +85,7 @@ export const storyStore = createStore<StoryState>((set, get) => ({
   maxQuality: 'high',
   reducedMotion: false,
   webgl: true,
-  cam: { t: 0, look: { x: 0, y: 0, z: -60 }, travel: 0 },
+  cam: { t: 0, look: { x: 0, y: 0, z: -60 }, travel: 0, phase: 1 },
   lens: { x: 0.64, y: 0.52, strength: 0 },
   lensMass: 0.5,
   clocksBeta: 0.6,

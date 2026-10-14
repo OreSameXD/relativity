@@ -64,7 +64,7 @@ export function Earth({ radius = 1.8, lightDir = [0.55, 0.35, 0.75] as [number, 
   return (
     <group>
       <mesh material={mat}>
-        <sphereGeometry args={[radius, 48, 48]} />
+        <sphereGeometry args={[radius, 72, 72]} />
       </mesh>
       <mesh scale={1.08}>
         <sphereGeometry args={[radius, 32, 32]} />

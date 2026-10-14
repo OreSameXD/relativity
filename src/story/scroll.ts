@@ -103,6 +103,7 @@ export function initStory(root: HTMLElement): () => void {
       tl.to(cam.look, { x: c.look[0], y: c.look[1], z: c.look[2], duration: c.travel, ease: 'power2.inOut' }, start);
       tl.to(cam, { travel: 1, duration: c.travel / 2, ease: 'sine.in' }, start);
       tl.to(cam, { travel: 0, duration: c.travel / 2, ease: 'sine.out' }, start + c.travel / 2);
+      tl.fromTo(cam, { phase: 0 }, { phase: 1, duration: c.travel, ease: 'none' }, start);
     }
 
     if (copy) {
@@ -205,6 +206,7 @@ function initReduced(root: HTMLElement): () => void {
               cam.look.x = c.look[0];
               cam.look.y = c.look[1];
               cam.look.z = c.look[2];
+              cam.phase = 1;
               lens.strength = c.id === 'lens' ? 1 : 0;
             })
             .to(fade, { opacity: 0, duration: 0.25 });

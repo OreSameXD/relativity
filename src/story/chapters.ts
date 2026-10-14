@@ -21,16 +21,18 @@ export interface ChapterDef {
   hold: number;
   /** Ссылка «Подробнее» */
   article?: string;
+  /** Цвет главы: им окрашивается пыль, ведущая к ней */
+  color: string;
 }
 
 export const CHAPTERS: ChapterDef[] = [
-  { index: 0, id: 'intro',   title: 'Время относительно',        anchor: [0, 0, 0],       look: [0, 0, -60],    travel: 0, hold: 1.5 },
-  { index: 1, id: 'clocks',  title: 'Световые часы',             anchor: [14, 3, -42],    look: [14, 0, -70],   travel: 1, hold: 1.5, article: '/articles/time-dilation' },
-  { index: 2, id: 'twins',   title: 'Парадокс близнецов',        anchor: [-12, -5, -86],  look: [-12, -2, -120],travel: 1, hold: 1.5, article: '/articles/twin-paradox' },
-  { index: 3, id: 'gravity', title: 'Гравитация гнёт пространство', anchor: [10, 12, -128], look: [8, 0, -160], travel: 1, hold: 1.5, article: '/articles/curved-spacetime' },
-  { index: 4, id: 'lens',    title: 'Гравитационная линза',      anchor: [0, 0, -170],    look: [0, 0, -230],   travel: 1, hold: 1.5, article: '/articles/gravitational-lensing' },
-  { index: 5, id: 'gps',     title: 'Зачем это в жизни: GPS',    anchor: [-16, 5, -214],  look: [-14, 0, -250], travel: 1, hold: 1.5, article: '/articles/gps' },
-  { index: 6, id: 'finale',  title: 'Финал',                     anchor: [0, 26, -262],   look: [0, 0, -120],   travel: 1, hold: 1 },
+  { index: 0, id: 'intro',   title: 'Время относительно',        anchor: [0, 0, 0],       look: [0, 0, -60],    travel: 0, hold: 1.5, color: '#9fb4ff' },
+  { index: 1, id: 'clocks',  title: 'Световые часы',             anchor: [14, 3, -42],    look: [14, 0, -70],   travel: 1, hold: 1.5, article: '/articles/time-dilation', color: '#6d5dfc' },
+  { index: 2, id: 'twins',   title: 'Парадокс близнецов',        anchor: [-12, -5, -86],  look: [-12, -2, -120],travel: 1, hold: 1.5, article: '/articles/twin-paradox', color: '#4f8dff' },
+  { index: 3, id: 'gravity', title: 'Гравитация гнёт пространство', anchor: [10, 12, -128], look: [8, 0, -160], travel: 1, hold: 1.5, article: '/articles/curved-spacetime', color: '#ffb454' },
+  { index: 4, id: 'lens',    title: 'Гравитационная линза',      anchor: [0, 0, -170],    look: [0, 0, -230],   travel: 1, hold: 1.5, article: '/articles/gravitational-lensing', color: '#ffd27a' },
+  { index: 5, id: 'gps',     title: 'Зачем это в жизни: GPS',    anchor: [-16, 5, -214],  look: [-14, 0, -250], travel: 1, hold: 1.5, article: '/articles/gps', color: '#5ee0ff' },
+  { index: 6, id: 'finale',  title: 'Финал',                     anchor: [0, 26, -262],   look: [0, 0, -120],   travel: 1, hold: 1, color: '#b48cff' },
 ];
 
 /** Доля удержания, после которой текст считается полностью показанным (точка snap). */

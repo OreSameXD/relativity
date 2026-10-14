@@ -6,9 +6,9 @@ import { storyStore, useStory, type Quality } from '../story/store';
 import { nebulaFrag, nebulaVert, starsFrag, starsVert } from './shaders';
 
 const COUNTS: Record<Quality, { far: number; dust: number }> = {
-  high: { far: 7000, dust: 3500 },
-  medium: { far: 3000, dust: 1400 },
-  low: { far: 1400, dust: 500 },
+  high: { far: 7000, dust: 2200 },
+  medium: { far: 3000, dust: 900 },
+  low: { far: 1400, dust: 350 },
 };
 
 /** Цвет звезды: холодные белые и голубые, редкие тёплые. */

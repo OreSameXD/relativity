@@ -4,6 +4,7 @@ import { PerformanceMonitor } from '@react-three/drei';
 import { detectQuality, hasWebGL, storyStore, useStory, type Quality } from '../story/store';
 import { CameraRig } from './CameraRig';
 import { Background } from './Background';
+import { WarpDust } from './WarpDust';
 import { Chapters } from './Chapters';
 import { Effects } from './Effects';
 
@@ -68,6 +69,7 @@ export default function StoryCanvas() {
         <CameraRig />
         <Suspense fallback={null}>
           <Background />
+          <WarpDust />
           <Chapters />
         </Suspense>
         <Effects />
