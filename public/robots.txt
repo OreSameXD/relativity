@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gargantua.space/sitemap-index.xml
