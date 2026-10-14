@@ -4,11 +4,12 @@ import { AdditiveBlending, BufferGeometry, Color, Float32BufferAttribute, Points
 import { useCameraCurve } from './CameraRig';
 import { storyStore, useStory, type Quality } from '../story/store';
 import { nebulaFrag, nebulaVert, starsFrag, starsVert } from './shaders';
+import { Skydome } from './Skydome';
 
-const COUNTS: Record<Quality, { far: number; dust: number }> = {
-  high: { far: 7000, dust: 2200 },
-  medium: { far: 3000, dust: 900 },
-  low: { far: 1400, dust: 350 },
+const COUNTS: Record<Quality, { far: number; faint: number; dust: number }> = {
+  high: { far: 6000, faint: 9000, dust: 2200 },
+  medium: { far: 2600, faint: 3500, dust: 900 },
+  low: { far: 1200, faint: 1200, dust: 350 },
 };
 
 /** Цвет звезды: холодные белые и голубые, редкие тёплые. */
@@ -63,7 +64,7 @@ export function starMaterial(attenuate: number, scale: number, intensity: number
 }
 
 /** Далёкие звёзды: сфера вокруг камеры, как бы на бесконечности. */
-function FarStars({ count }: { count: number }) {
+function FarStars({ count, sizeMin = 1.0, sizeMax = 3.4, intensity = 1.0, seedShift = 0 }: { count: number; sizeMin?: number; sizeMax?: number; intensity?: number; seedShift?: number }) {
   const ref = useRef<Points>(null);
   const dpr = useThree((s) => s.viewport.dpr);
   const geo = useMemo(
@@ -74,14 +75,14 @@ function FarStars({ count }: { count: number }) {
           const u = Math.random() * 2 - 1;
           const th = Math.random() * Math.PI * 2;
           const r = Math.sqrt(1 - u * u);
-          v.set(r * Math.cos(th) * 600, u * 600, r * Math.sin(th) * 600);
+          v.set(r * Math.cos(th) * (600 + seedShift), u * (600 + seedShift), r * Math.sin(th) * (600 + seedShift));
         },
-        1.0,
-        3.2,
+        sizeMin,
+        sizeMax,
       ),
-    [count],
+    [count, sizeMin, sizeMax, seedShift],
   );
-  const mat = useMemo(() => starMaterial(0, 1, 1.0, dpr), [dpr]);
+  const mat = useMemo(() => starMaterial(0, 1, intensity, dpr), [dpr, intensity]);
 
   useFrame((state) => {
     if (!ref.current) return;
@@ -163,13 +164,14 @@ export function Background() {
   const n = COUNTS[quality];
   return (
     <group>
+      <Skydome />
+      {/* два слоя звёзд: яркие с ореолами и россыпь мелких */}
       <FarStars count={n.far} />
+      <FarStars count={n.faint} sizeMin={0.5} sizeMax={1.3} intensity={0.6} seedShift={20} />
       <Dust count={n.dust} />
-      {/* Туманности позади дороги: интро, середина, за чёрной дырой, финал */}
-      <Nebula position={[-30, 10, -140]} size={260} a="#0b0f2a" b="#6d5dfc" alpha={0.5} />
-      <Nebula position={[40, -20, -90]} size={200} a="#0b0f2a" b="#2b4cff" alpha={0.35} />
-      <Nebula position={[10, 0, -300]} size={320} a="#141a4a" b="#8a6dff" alpha={0.6} />
-      <Nebula position={[-50, 30, -330]} size={240} a="#0b0f2a" b="#ff9a3c" alpha={0.18} />
+      {/* ближние клочья для параллакса: за чёрной дырой и у середины дороги */}
+      <Nebula position={[-30, 10, -140]} size={220} a="#0b0f2a" b="#6d5dfc" alpha={0.28} />
+      <Nebula position={[10, 0, -300]} size={300} a="#141a4a" b="#8a6dff" alpha={0.4} />
     </group>
   );
 }

@@ -28,7 +28,9 @@ function Dial({ rate, title, note, accent }: { rate: number; title: string; note
         <circle className="dial-face" cx="50" cy="50" r="44" />
         {Array.from({ length: 12 }, (_, i) => {
           const a = (i / 12) * Math.PI * 2;
-          return <line key={i} className="dial-tick" x1={50 + Math.sin(a) * 38} y1={50 - Math.cos(a) * 38} x2={50 + Math.sin(a) * 42} y2={50 - Math.cos(a) * 42} />;
+          // округляем, иначе сервер и клиент печатают дроби по-разному и React ругается на гидрацию
+          const r2 = (v: number) => Math.round(v * 100) / 100;
+          return <line key={i} className="dial-tick" x1={r2(50 + Math.sin(a) * 38)} y1={r2(50 - Math.cos(a) * 38)} x2={r2(50 + Math.sin(a) * 42)} y2={r2(50 - Math.cos(a) * 42)} />;
         })}
         <g className="dial-hand" style={{ animationDuration: `${duration}s` }}>
           <line x1="50" y1="54" x2="50" y2="16" />
