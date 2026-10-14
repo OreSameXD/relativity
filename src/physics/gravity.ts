@@ -36,6 +36,12 @@ export function einsteinCoupling(): number {
   return (8 * Math.PI * G) / C ** 4;
 }
 
+/** Ход часов на расстоянии r от массы с гравитационным радиусом r_s относительно далёких часов: dτ/dt = √(1 − r_s/r). */
+export function clockRateFactor(r: number, rs: number): number {
+  if (r <= rs) return 0;
+  return Math.sqrt(1 - rs / r);
+}
+
 /** Гравитационное красное смещение между высотами в слабом поле: Δν/ν ≈ gh/c². */
 export function gravitationalRedshift(g: number, height: number): number {
   return (g * height) / (C * C);

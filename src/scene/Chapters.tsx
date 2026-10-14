@@ -9,6 +9,7 @@ const LOADERS: Record<number, ComponentType> = {
   3: lazy(() => import('./chapters/Gravity')),
   4: lazy(() => import('./chapters/Lens')),
   5: lazy(() => import('./chapters/Gps')),
+  6: lazy(() => import('./chapters/Finale')),
 };
 
 export function Chapters() {

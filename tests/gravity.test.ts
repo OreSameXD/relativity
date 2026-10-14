@@ -3,6 +3,7 @@ import { M_SUN } from '../src/physics/lens';
 import {
   MERCURY,
   M_EARTH,
+  clockRateFactor,
   einsteinCoupling,
   flammHeight,
   gravitationalRedshift,
@@ -27,6 +28,13 @@ describe('кривизна пространства-времени', () => {
     const perOrbit = perihelionShiftPerOrbit(M_SUN, MERCURY.a, MERCURY.e);
     expect(perOrbit * (180 / Math.PI) * 3600).toBeCloseTo(0.1035, 3);
     expect(perihelionShiftPerCentury(M_SUN, MERCURY.a, MERCURY.e, MERCURY.periodDays)).toBeCloseTo(43.0, 0);
+  });
+
+  it('часы на поверхности Земли отстают от далёких на 7·10⁻¹⁰, на горизонте стоят', () => {
+    const rs = schwarzschildRadius(M_EARTH);
+    expect((1 - clockRateFactor(6.371e6, rs)) / 1e-10).toBeCloseTo(6.96, 1);
+    expect(clockRateFactor(rs, rs)).toBe(0);
+    expect(1 - clockRateFactor(1.5 * rs, rs)).toBeCloseTo(1 - Math.sqrt(1 / 3), 10);
   });
 
   it('коэффициент уравнений Эйнштейна 8πG/c⁴ ≈ 2,08·10⁻⁴³ Н⁻¹', () => {

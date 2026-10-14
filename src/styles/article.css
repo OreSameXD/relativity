@@ -72,6 +72,22 @@
 .lab-out .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px; }
 .lab-out .num { font-size: 1.15rem; color: var(--ice); }
 
+/* Циферблаты вводной статьи */
+.dials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 18px 18px 4px; }
+@media (max-width: 560px) { .dials { grid-template-columns: 1fr; } }
+.dial { text-align: center; }
+.dial svg { width: 100%; max-width: 150px; height: auto; display: block; margin: 0 auto; }
+.dial-face { fill: color-mix(in srgb, var(--bg-2) 70%, transparent); stroke: color-mix(in srgb, var(--violet) 45%, transparent); stroke-width: 1.5; }
+.dial-tick { stroke: var(--muted); stroke-width: 1.5; }
+.dial-hand line { stroke: var(--ice); stroke-width: 3; stroke-linecap: round; }
+.is-accent .dial-hand line { stroke: var(--warm); }
+.dial-hand { transform-origin: 50px 50px; animation: dial-turn linear infinite; }
+.dial-pin { fill: var(--ice); }
+.dial-title { margin-top: 10px; font-weight: 600; color: var(--ice); font-size: 0.95rem; }
+.dial-note { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
+@keyframes dial-turn { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .dial-hand { animation: none; } }
+
 /* Факты и источники */
 .facts { counter-reset: fact; list-style: none; padding: 0; display: grid; gap: 14px; }
 .facts li { counter-increment: fact; position: relative; padding-left: 2.6rem; }

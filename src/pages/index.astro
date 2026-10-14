@@ -22,7 +22,7 @@ import '../styles/story.css';
   <div id="fade"></div>
 
   <div id="story">
-    <Chapter index={0} id="intro" title="Время относительно" align="center">
+    <Chapter index={0} id="intro" title="Время относительно" align="center" article="/articles/intro-sr-gr">
       <p>История о том, почему у каждого из нас своё время.</p>
     </Chapter>
 
@@ -53,9 +53,13 @@ import '../styles/story.css';
     </Chapter>
 
     <Chapter index={6} id="finale" title="Время относительно" align="center">
+      <p>Скорость замедляет время. Масса гнёт пространство и время. Свет огибает звёзды, а навигатор в кармане каждую секунду считает по Эйнштейну.</p>
       <p>Нет единого «сейчас». Есть ваше время и моё.</p>
-      <p><a class="more" href="/articles">Все статьи</a></p>
-      <p class="credit">Сделано <a href="#" rel="author">root39</a></p>
+      <p class="finale-links">
+        <a class="more" href="/articles">Все статьи</a>
+        <a class="more more-ghost" href="#intro">В начало</a>
+      </p>
+      <p class="credit">Сделано <a href="#" rel="author" title="Адрес сайта уточняется">root39</a></p>
     </Chapter>
   </div>
 
@@ -69,6 +73,9 @@ import '../styles/story.css';
 </script>
 
 <style>
+  .finale-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .more-ghost { color: var(--text); border-color: color-mix(in srgb, var(--violet) 45%, transparent); }
+  .more-ghost:hover { background: color-mix(in srgb, var(--violet) 18%, transparent); }
   .credit { margin-top: var(--space-4); color: var(--muted); font-size: 0.9rem; }
   .credit a { color: var(--text); pointer-events: auto; }
 </style>
