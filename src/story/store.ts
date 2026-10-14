@@ -42,6 +42,13 @@ export interface StoryState {
   clockTicks: { rest: number; moving: number };
   /** Увеличивается при сбросе: сцена обнуляет симуляцию */
   clockResetKey: number;
+  /** Глава 2: скорость корабля β и длительность полёта по часам Земли (лет) */
+  twinsBeta: number;
+  twinsYears: number;
+  twinsPhase: 'idle' | 'flying' | 'done';
+  twinsLaunchKey: number;
+  /** Мутируемый объект: сцена пишет прогресс полёта и возраст каждый кадр */
+  twinsSim: { progress: number; earthYears: number; shipYears: number };
   setChapter: (n: number) => void;
   setProgress: (p: number) => void;
   setQuality: (q: Quality) => void;
@@ -53,6 +60,11 @@ export interface StoryState {
   setClocksBeta: (b: number) => void;
   setClockTicks: (rest: number, moving: number) => void;
   resetClocks: () => void;
+  setTwinsBeta: (b: number) => void;
+  setTwinsYears: (y: number) => void;
+  launchTwins: () => void;
+  finishTwins: () => void;
+  resetTwins: () => void;
 }
 
 export const storyStore = createStore<StoryState>((set, get) => ({
@@ -68,6 +80,11 @@ export const storyStore = createStore<StoryState>((set, get) => ({
   clocksBeta: 0.6,
   clockTicks: { rest: 0, moving: 0 },
   clockResetKey: 0,
+  twinsBeta: 0.8,
+  twinsYears: 10,
+  twinsPhase: 'idle',
+  twinsLaunchKey: 0,
+  twinsSim: { progress: 0, earthYears: 0, shipYears: 0 },
   setChapter: (chapter) => set({ chapter }),
   setProgress: (progress) => set({ progress }),
   setQuality: (quality) => set({ quality }),
@@ -86,6 +103,17 @@ export const storyStore = createStore<StoryState>((set, get) => ({
     if (t.rest !== rest || t.moving !== moving) set({ clockTicks: { rest, moving } });
   },
   resetClocks: () => set((s) => ({ clockResetKey: s.clockResetKey + 1, clockTicks: { rest: 0, moving: 0 } })),
+  setTwinsBeta: (twinsBeta) => set({ twinsBeta }),
+  setTwinsYears: (twinsYears) => set({ twinsYears }),
+  launchTwins: () => set((s) => ({ twinsPhase: 'flying', twinsLaunchKey: s.twinsLaunchKey + 1 })),
+  finishTwins: () => set({ twinsPhase: 'done' }),
+  resetTwins: () => {
+    const sim = get().twinsSim;
+    sim.progress = 0;
+    sim.earthYears = 0;
+    sim.shipYears = 0;
+    set({ twinsPhase: 'idle' });
+  },
 }));
 
 export function useStory<T>(selector: (s: StoryState) => T): T {

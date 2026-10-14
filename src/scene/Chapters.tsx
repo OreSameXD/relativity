@@ -5,6 +5,7 @@ import { useStory } from '../story/store';
 const LOADERS: Record<number, ComponentType> = {
   0: lazy(() => import('./chapters/Intro')),
   1: lazy(() => import('./chapters/LightClocks')),
+  2: lazy(() => import('./chapters/Twins')),
   4: lazy(() => import('./chapters/Lens')),
 };
 

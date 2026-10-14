@@ -4,6 +4,7 @@ import Chapter from '../components/story/Chapter.astro';
 import StoryCanvas from '../scene/StoryCanvas';
 import LensControls from '../components/controls/LensControls';
 import LightClockControls from '../components/controls/LightClockControls';
+import TwinsControls from '../components/controls/TwinsControls';
 import '../styles/story.css';
 ---
 <Base
@@ -30,6 +31,7 @@ import '../styles/story.css';
 
     <Chapter index={2} id="twins" title="Парадокс близнецов" kicker="Глава 2" article="/articles/twin-paradox">
       <p>Один улетает, другой остаётся. Встречаются люди разного возраста.</p>
+      <TwinsControls client:idle slot="controls" />
     </Chapter>
 
     <Chapter index={3} id="gravity" title="Гравитация гнёт пространство" kicker="Глава 3" article="/articles/curved-spacetime">

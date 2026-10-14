@@ -32,6 +32,11 @@ button { font: inherit; color: inherit; }
 .btn-ghost { min-height: 40px; padding: 8px 14px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--violet) 45%, transparent); background: transparent; color: var(--text); cursor: pointer; transition: border-color var(--dur-fast), background var(--dur-fast); }
 .btn-ghost:hover { border-color: var(--warm); background: color-mix(in srgb, var(--warm) 10%, transparent); }
 
+/* Основная кнопка */
+.btn-primary { min-height: 44px; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--warm); background: color-mix(in srgb, var(--warm) 16%, transparent); color: var(--warm); font-weight: 600; cursor: pointer; transition: background var(--dur-fast), transform var(--dur-fast); }
+.btn-primary:hover:not(:disabled) { background: color-mix(in srgb, var(--warm) 28%, transparent); transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.5; cursor: default; }
+
 /* Шапка сайта (общая для истории и статей) */
 .site-header {
   position: fixed; inset: 0 0 auto 0; z-index: 3;
