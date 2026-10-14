@@ -36,7 +36,7 @@ export const GET: APIRoute = async ({ props }) => {
   const { title, kicker } = props as Props;
   // Подзаголовок в одну-две строки: длинное описание обрезаем по слову
   const raw = (props as Props).subtitle;
-  const subtitle = raw.length > 105 ? raw.slice(0, 105).replace(/[\s,:;]+\S*$/, '') + '…' : raw;
+  const subtitle = raw.length > 95 ? raw.slice(0, 95).replace(/[\s,:;]+\S*$/, '') + '…' : raw;
   const [unbC, unbL, manC, manL] = await Promise.all([
     font('unbounded', 'unbounded-cyrillic-700-normal.woff'),
     font('unbounded', 'unbounded-latin-700-normal.woff'),
@@ -79,9 +79,19 @@ export const GET: APIRoute = async ({ props }) => {
             children: [],
           },
         },
-        { type: 'div', props: { style: { fontSize: 24, letterSpacing: 4, textTransform: 'uppercase', color: '#7d87a8', marginBottom: 18, display: 'flex' }, children: kicker } },
-        { type: 'div', props: { style: { fontFamily: 'Unbounded, UnboundedLatin', fontSize: title.length > 28 ? 52 : 68, lineHeight: 1.08, maxWidth: 820, display: 'flex' }, children: title } },
-        { type: 'div', props: { style: { fontSize: 28, lineHeight: 1.35, color: '#c8d0e6', marginTop: 22, maxWidth: 760, display: 'flex' }, children: subtitle } },
+        {
+          type: 'div',
+          props: {
+            // Текст ставим по фиксированной верхней координате: satori занижает высоту
+            // многострочных блоков при выравнивании по низу, и подзаголовок уезжал за край.
+            style: { position: 'absolute', left: 72, top: 270, width: 860, display: 'flex', flexDirection: 'column' },
+            children: [
+              { type: 'div', props: { style: { fontSize: 22, letterSpacing: 4, textTransform: 'uppercase', color: '#7d87a8', marginBottom: 16, display: 'flex' }, children: kicker } },
+              { type: 'div', props: { style: { fontFamily: 'Unbounded, UnboundedLatin', fontSize: title.length > 28 ? 46 : 60, lineHeight: 1.1, display: 'flex' }, children: title } },
+              { type: 'div', props: { style: { fontSize: 26, lineHeight: 1.35, color: '#c8d0e6', marginTop: 18, maxWidth: 760, display: 'flex' }, children: subtitle } },
+            ],
+          },
+        },
         { type: 'div', props: { style: { position: 'absolute', left: 72, top: 60, fontSize: 20, letterSpacing: 3, color: '#7d87a8', textTransform: 'uppercase', fontFamily: 'Unbounded, UnboundedLatin', display: 'flex' }, children: 'gargantua.space' } },
       ],
     },
