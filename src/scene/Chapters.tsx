@@ -4,6 +4,7 @@ import { useStory } from '../story/store';
 /** Ленивые группы глав. Монтируются за одну главу до входа в кадр, размонтируются после. */
 const LOADERS: Record<number, ComponentType> = {
   0: lazy(() => import('./chapters/Intro')),
+  1: lazy(() => import('./chapters/LightClocks')),
   4: lazy(() => import('./chapters/Lens')),
 };
 

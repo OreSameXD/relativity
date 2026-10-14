@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Chapter from '../components/story/Chapter.astro';
 import StoryCanvas from '../scene/StoryCanvas';
 import LensControls from '../components/controls/LensControls';
+import LightClockControls from '../components/controls/LightClockControls';
 import '../styles/story.css';
 ---
 <Base
@@ -24,6 +25,7 @@ import '../styles/story.css';
 
     <Chapter index={1} id="clocks" title="Световые часы" kicker="Глава 1" article="/articles/time-dilation">
       <p>Часы, которые летят, тикают медленнее. Не кажутся — <strong>тикают</strong>.</p>
+      <LightClockControls client:idle slot="controls" />
     </Chapter>
 
     <Chapter index={2} id="twins" title="Парадокс близнецов" kicker="Глава 2" article="/articles/twin-paradox">

@@ -18,6 +18,10 @@ export function useCameraCurve() {
 export function CameraRig() {
   const curve = useCameraCurve();
   const camera = useThree((s) => s.camera) as PerspectiveCamera;
+  const scene = useThree((s) => s.scene);
+  useEffect(() => {
+    if (import.meta.env.DEV) (window as unknown as { __scene: unknown }).__scene = scene;
+  }, [scene]);
   const pointer = useRef({ x: 0, y: 0 });
   const pos = useMemo(() => new Vector3(), []);
   const look = useMemo(() => new Vector3(0, 0, -60), []);

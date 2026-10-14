@@ -80,6 +80,10 @@ export function initStory(root: HTMLElement): () => void {
       end: 'bottom bottom',
       scrub: 0.8,
       onUpdate: (self) => {
+        if (import.meta.env.DEV) {
+          const w = window as unknown as { __scrollLog?: Array<[number, number]> };
+          (w.__scrollLog ??= []).push([Math.round(performance.now()), Math.round(self.scroll())]);
+        }
         store.getState().setProgress(self.progress);
         hint?.classList.toggle('is-hidden', self.scroll() > 40);
       },

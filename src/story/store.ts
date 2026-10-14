@@ -36,6 +36,12 @@ export interface StoryState {
   lens: LensState;
   /** Масса чёрной дыры 0..1 → радиус Эйнштейна (реактивно: нужно UI) */
   lensMass: number;
+  /** Глава 1: скорость летящих часов, β = v/c, 0..0,99 */
+  clocksBeta: number;
+  /** Глава 1: сколько тиков отсчитали часы (сцена пишет только при изменении) */
+  clockTicks: { rest: number; moving: number };
+  /** Увеличивается при сбросе: сцена обнуляет симуляцию */
+  clockResetKey: number;
   setChapter: (n: number) => void;
   setProgress: (p: number) => void;
   setQuality: (q: Quality) => void;
@@ -44,6 +50,9 @@ export interface StoryState {
   setReducedMotion: (v: boolean) => void;
   setLensTarget: (x: number, y: number) => void;
   setLensMass: (m: number) => void;
+  setClocksBeta: (b: number) => void;
+  setClockTicks: (rest: number, moving: number) => void;
+  resetClocks: () => void;
 }
 
 export const storyStore = createStore<StoryState>((set, get) => ({
@@ -56,6 +65,9 @@ export const storyStore = createStore<StoryState>((set, get) => ({
   cam: { t: 0, look: { x: 0, y: 0, z: -60 }, travel: 0 },
   lens: { x: 0.64, y: 0.52, strength: 0 },
   lensMass: 0.5,
+  clocksBeta: 0.6,
+  clockTicks: { rest: 0, moving: 0 },
+  clockResetKey: 0,
   setChapter: (chapter) => set({ chapter }),
   setProgress: (progress) => set({ progress }),
   setQuality: (quality) => set({ quality }),
@@ -68,6 +80,12 @@ export const storyStore = createStore<StoryState>((set, get) => ({
     lens.y = y;
   },
   setLensMass: (lensMass) => set({ lensMass }),
+  setClocksBeta: (clocksBeta) => set({ clocksBeta }),
+  setClockTicks: (rest, moving) => {
+    const t = get().clockTicks;
+    if (t.rest !== rest || t.moving !== moving) set({ clockTicks: { rest, moving } });
+  },
+  resetClocks: () => set((s) => ({ clockResetKey: s.clockResetKey + 1, clockTicks: { rest: 0, moving: 0 } })),
 }));
 
 export function useStory<T>(selector: (s: StoryState) => T): T {

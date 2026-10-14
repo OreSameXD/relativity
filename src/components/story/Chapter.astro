@@ -9,7 +9,8 @@ interface Props {
 }
 const { index, id, title, article, kicker, align = 'left' } = Astro.props;
 ---
-<section class:list={['chapter', `align-${align}`]} data-chapter={index} id={id}>
+<!-- id с префиксом: браузер не должен сам прыгать к #clocks, хэшем управляет scroll.ts -->
+<section class:list={['chapter', `align-${align}`]} data-chapter={index} data-id={id} id={`chapter-${id}`}>
   <div class="copy">
     <slot name="touch" />
     <div class="copy-inner">

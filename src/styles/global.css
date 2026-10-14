@@ -28,6 +28,10 @@ button { font: inherit; color: inherit; }
 .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 .simplified { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; }
 
+/* Кнопка-призрак */
+.btn-ghost { min-height: 40px; padding: 8px 14px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--violet) 45%, transparent); background: transparent; color: var(--text); cursor: pointer; transition: border-color var(--dur-fast), background var(--dur-fast); }
+.btn-ghost:hover { border-color: var(--warm); background: color-mix(in srgb, var(--warm) 10%, transparent); }
+
 /* Шапка сайта (общая для истории и статей) */
 .site-header {
   position: fixed; inset: 0 0 auto 0; z-index: 3;
