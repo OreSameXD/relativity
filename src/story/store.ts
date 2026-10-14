@@ -34,6 +34,8 @@ export interface StoryState {
   maxQuality: Quality;
   reducedMotion: boolean;
   webgl: boolean;
+  /** Узкий вертикальный экран: сцена компонуется под текст, камера шире */
+  portrait: boolean;
   cam: CamState;
   lens: LensState;
   /** Масса чёрной дыры 0..1 → радиус Эйнштейна (реактивно: нужно UI) */
@@ -62,6 +64,7 @@ export interface StoryState {
   setMaxQuality: (q: Quality) => void;
   setWebgl: (ok: boolean) => void;
   setReducedMotion: (v: boolean) => void;
+  setPortrait: (v: boolean) => void;
   setLensTarget: (x: number, y: number) => void;
   setLensMass: (m: number) => void;
   setClocksBeta: (b: number) => void;
@@ -85,6 +88,7 @@ export const storyStore = createStore<StoryState>((set, get) => ({
   maxQuality: 'high',
   reducedMotion: false,
   webgl: true,
+  portrait: false,
   cam: { t: 0, look: { x: 0, y: 0, z: -60 }, travel: 0, phase: 1 },
   lens: { x: 0.64, y: 0.52, strength: 0 },
   lensMass: 0.5,
@@ -105,6 +109,7 @@ export const storyStore = createStore<StoryState>((set, get) => ({
   setMaxQuality: (maxQuality) => set({ maxQuality }),
   setWebgl: (webgl) => set({ webgl }),
   setReducedMotion: (reducedMotion) => set({ reducedMotion }),
+  setPortrait: (portrait) => set({ portrait }),
   setLensTarget: (x, y) => {
     const { lens } = get();
     lens.x = x;
@@ -147,13 +152,22 @@ export function useStory<T>(selector: (s: StoryState) => T): T {
 /** Начальный уровень качества по устройству. */
 export function detectQuality(): Quality {
   if (typeof window === 'undefined') return 'high';
+  const forced = devFlag('quality');
+  if (forced === 'low' || forced === 'medium' || forced === 'high') return forced;
   const coarse = window.matchMedia('(pointer: coarse)').matches;
   const narrow = window.innerWidth < 768;
   return coarse || narrow ? 'medium' : 'high';
 }
 
+/** Принудительные режимы для проверки: ?nowebgl=1, ?reduce=1, ?quality=low|medium|high */
+export function devFlag(name: string): string | null {
+  if (typeof location === 'undefined') return null;
+  return new URLSearchParams(location.search).get(name);
+}
+
 export function hasWebGL(): boolean {
   if (typeof document === 'undefined') return false;
+  if (devFlag('nowebgl')) return false;
   try {
     const c = document.createElement('canvas');
     return !!(c.getContext('webgl2') || c.getContext('webgl'));

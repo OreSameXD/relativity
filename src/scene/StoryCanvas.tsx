@@ -29,10 +29,17 @@ export default function StoryCanvas() {
     st.setQuality(q);
     st.setMaxQuality(q);
     // На узком экране текст прижат к низу, чёрную дыру ставим выше и по центру
-    if (window.innerWidth < 768) {
-      st.lens.x = 0.5;
-      st.lens.y = 0.7;
-    }
+    const update = () => {
+      const portrait = window.innerWidth < 768 && window.innerHeight > window.innerWidth;
+      if (portrait !== storyStore.getState().portrait) storyStore.getState().setPortrait(portrait);
+      if (portrait) {
+        st.lens.x = 0.5;
+        st.lens.y = 0.7;
+      }
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, [ok]);
 
   if (!ok) return null;

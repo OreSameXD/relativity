@@ -43,7 +43,7 @@ export function CameraRig() {
   }, []);
 
   useFrame((state, dt) => {
-    const { cam, reducedMotion } = storyStore.getState();
+    const { cam, reducedMotion, portrait } = storyStore.getState();
     const t = state.clock.elapsedTime;
     curve.getPoint(MathUtils.clamp(cam.t, 0, 1), pos);
 
@@ -57,11 +57,12 @@ export function CameraRig() {
 
     const k = 1 - Math.exp(-dt * 6);
     camera.position.lerp(pos, k);
-    lookTarget.set(cam.look.x, cam.look.y, cam.look.z).add(parallax.clone().multiplyScalar(3));
+    // На телефоне сцена должна быть в верхней трети кадра, над текстом: смотрим чуть ниже цели
+    lookTarget.set(cam.look.x, cam.look.y - (portrait ? 13 : 0), cam.look.z).add(parallax.clone().multiplyScalar(3));
     look.lerp(lookTarget, k);
     camera.lookAt(look);
 
-    const fov = BASE_FOV + cam.travel * TRAVEL_FOV;
+    const fov = (portrait ? 74 : BASE_FOV) + cam.travel * TRAVEL_FOV;
     if (Math.abs(camera.fov - fov) > 0.01) {
       camera.fov = fov;
       camera.updateProjectionMatrix();

@@ -9,6 +9,7 @@ export default function Twins() {
   const years = useStory((s) => s.twinsYears);
   const launchKey = useStory((s) => s.twinsLaunchKey);
   const chapter = useStory((s) => s.chapter);
+  const portrait = useStory((s) => s.portrait);
   const look = CHAPTERS[2].look;
 
   const onProgress = useCallback((progress: number, earthYears: number, shipYears: number) => {
@@ -24,8 +25,8 @@ export default function Twins() {
       beta={beta}
       years={years}
       launchKey={launchKey}
-      origin={[look[0] + 1, look[1] + 1, look[2] + 6]}
-      length={16}
+      origin={[look[0] + (portrait ? -7 : 1), look[1] + 1, look[2] + 6]}
+      length={portrait ? 12 : 16}
       running={chapter === 2}
       onProgress={onProgress}
       onDone={onDone}

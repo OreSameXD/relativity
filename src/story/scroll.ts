@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import Snap from 'lenis/snap';
 import { CHAPTERS, HOLD_LEAVE, HOLD_SETTLE, TOTAL_UNITS, chapterSettle, chapterStart } from './chapters';
-import { storyStore } from './store';
+import { devFlag, storyStore } from './store';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,7 +28,7 @@ function chapterAt(u: number): number {
 export function initStory(root: HTMLElement): () => void {
   const store = storyStore;
   if (import.meta.env.DEV) (window as unknown as { __story: typeof storyStore }).__story = storyStore;
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches || !!devFlag('reduce');
   store.getState().setReducedMotion(reduced);
 
   // Высота секций — из единого списка глав.

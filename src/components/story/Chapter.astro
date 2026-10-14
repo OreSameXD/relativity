@@ -10,7 +10,7 @@ interface Props {
 const { index, id, title, article, kicker, align = 'left' } = Astro.props;
 ---
 <!-- id с префиксом: браузер не должен сам прыгать к #clocks, хэшем управляет scroll.ts -->
-<section class:list={['chapter', `align-${align}`]} data-chapter={index} data-id={id} id={`chapter-${id}`}>
+<section class:list={['chapter', `align-${align}`]} data-chapter={index} data-id={id} id={`chapter-${id}`} style={`--fallback: url(/fallback/${id}.jpg)`}>
   <div class="copy">
     <slot name="touch" />
     <div class="copy-inner">
@@ -20,6 +20,6 @@ const { index, id, title, article, kicker, align = 'left' } = Astro.props;
       {article && <a class="more" href={article}>Подробнее<span aria-hidden="true"> →</span></a>}
     </div>
     <div class="controls"><slot name="controls" /></div>
+    <p class="nowebgl-note">Интерактив этой главы требует WebGL. Это статичный кадр сцены.</p>
   </div>
-  <div class="fallback" aria-hidden="true"></div>
 </section>

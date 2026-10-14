@@ -7,6 +7,9 @@ import { SpacetimeGrid } from '../SpacetimeGrid';
 export default function Gravity() {
   const masses = useStory((s) => s.gravityMasses);
   const chapter = useStory((s) => s.chapter);
+  const quality = useStory((s) => s.quality);
+  const portrait = useStory((s) => s.portrait);
+  const segments = quality === 'high' ? 160 : quality === 'medium' ? 104 : 64;
   const look = CHAPTERS[3].look;
   const onPlace = useCallback((x: number, z: number) => {
     if (storyStore.getState().chapter !== 3) return;
@@ -15,10 +18,10 @@ export default function Gravity() {
 
   return (
     <SpacetimeGrid
-      center={[look[0] + 6, look[1] - 2, look[2]]}
+      center={[look[0] + (portrait ? 0 : 6), look[1] - 2, look[2]]}
       width={64}
       depth={46}
-      segments={160}
+      segments={segments}
       masses={masses}
       planets={9}
       running={chapter === 3}
