@@ -165,7 +165,8 @@ export function initStory(root: HTMLElement): () => void {
     if (document.readyState === 'complete') afterLoad();
     else window.addEventListener('load', afterLoad, { once: true });
   }
-  const onHash = () => goToHash(false);
+  // Внутри открытой страницы тоже прыгаем мгновенно: плавный scrollTo спорит со снапом
+  const onHash = () => goToHash(true);
   window.addEventListener('hashchange', onHash);
 
   return () => {

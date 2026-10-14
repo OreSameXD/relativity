@@ -50,6 +50,8 @@ export default function StoryCanvas() {
       camera={{ fov: 55, near: 0.1, far: 1200, position: [0, 0, 0] }}
       style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}
       eventSource={typeof document !== 'undefined' ? document.body : undefined}
+      // события приходят с body: координаты берём от окна, а не от элемента-цели
+      eventPrefix="client"
       onCreated={(state) => {
         if (import.meta.env.DEV) (window as unknown as { __r3f: unknown }).__r3f = state;
       }}

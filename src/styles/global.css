@@ -37,6 +37,13 @@ button { font: inherit; color: inherit; }
 .btn-primary:hover:not(:disabled) { background: color-mix(in srgb, var(--warm) 28%, transparent); transform: translateY(-1px); }
 .btn-primary:disabled { opacity: 0.5; cursor: default; }
 
+/* Сегментированный переключатель */
+.seg { display: inline-flex; padding: 3px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--violet) 45%, transparent); background: color-mix(in srgb, var(--bg) 60%, transparent); }
+.seg-btn { min-height: 38px; padding: 6px 16px; border-radius: 999px; border: 0; background: transparent; color: var(--text); cursor: pointer; transition: background var(--dur-fast), color var(--dur-fast); }
+.seg-btn[aria-pressed='true'] { background: var(--violet); color: var(--ice); }
+.seg-btn:hover:not([aria-pressed='true']) { color: var(--ice); }
+.btn-ghost:disabled { opacity: 0.45; cursor: default; }
+
 /* Шапка сайта (общая для истории и статей) */
 .site-header {
   position: fixed; inset: 0 0 auto 0; z-index: 3;

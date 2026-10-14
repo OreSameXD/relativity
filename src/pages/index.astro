@@ -5,6 +5,7 @@ import StoryCanvas from '../scene/StoryCanvas';
 import LensControls from '../components/controls/LensControls';
 import LightClockControls from '../components/controls/LightClockControls';
 import TwinsControls from '../components/controls/TwinsControls';
+import GravityControls from '../components/controls/GravityControls';
 import '../styles/story.css';
 ---
 <Base
@@ -36,6 +37,7 @@ import '../styles/story.css';
 
     <Chapter index={3} id="gravity" title="Гравитация гнёт пространство" kicker="Глава 3" article="/articles/curved-spacetime">
       <p>Масса прогибает пространство-время. Планеты просто катятся по изгибу.</p>
+      <GravityControls client:idle slot="controls" />
     </Chapter>
 
     <Chapter index={4} id="lens" title="Гравитационная линза" kicker="Глава 4" article="/articles/gravitational-lensing">

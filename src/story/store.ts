@@ -49,6 +49,9 @@ export interface StoryState {
   twinsLaunchKey: number;
   /** Мутируемый объект: сцена пишет прогресс полёта и возраст каждый кадр */
   twinsSim: { progress: number; earthYears: number; shipYears: number };
+  /** Глава 3: массы на сетке (мировые координаты x, z) и выбранный тип */
+  gravityMasses: Array<{ x: number; z: number; kind: 'star' | 'hole' }>;
+  gravityKind: 'star' | 'hole';
   setChapter: (n: number) => void;
   setProgress: (p: number) => void;
   setQuality: (q: Quality) => void;
@@ -65,6 +68,9 @@ export interface StoryState {
   launchTwins: () => void;
   finishTwins: () => void;
   resetTwins: () => void;
+  setGravityKind: (k: 'star' | 'hole') => void;
+  addGravityMass: (x: number, z: number) => void;
+  clearGravityMasses: () => void;
 }
 
 export const storyStore = createStore<StoryState>((set, get) => ({
@@ -85,6 +91,8 @@ export const storyStore = createStore<StoryState>((set, get) => ({
   twinsPhase: 'idle',
   twinsLaunchKey: 0,
   twinsSim: { progress: 0, earthYears: 0, shipYears: 0 },
+  gravityMasses: [],
+  gravityKind: 'star',
   setChapter: (chapter) => set({ chapter }),
   setProgress: (progress) => set({ progress }),
   setQuality: (quality) => set({ quality }),
@@ -107,6 +115,15 @@ export const storyStore = createStore<StoryState>((set, get) => ({
   setTwinsYears: (twinsYears) => set({ twinsYears }),
   launchTwins: () => set((s) => ({ twinsPhase: 'flying', twinsLaunchKey: s.twinsLaunchKey + 1 })),
   finishTwins: () => set({ twinsPhase: 'done' }),
+  setGravityKind: (gravityKind) => set({ gravityKind }),
+  addGravityMass: (x, z) =>
+    set((s) => {
+      // не ближе 3 единиц к уже стоящей массе и не больше 6 штук
+      if (s.gravityMasses.some((m) => Math.hypot(m.x - x, m.z - z) < 3)) return {};
+      const next = [...s.gravityMasses, { x, z, kind: s.gravityKind }];
+      return { gravityMasses: next.length > 6 ? next.slice(next.length - 6) : next };
+    }),
+  clearGravityMasses: () => set({ gravityMasses: [] }),
   resetTwins: () => {
     const sim = get().twinsSim;
     sim.progress = 0;
