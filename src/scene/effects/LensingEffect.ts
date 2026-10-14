@@ -1,6 +1,16 @@
 import { BlendFunction, Effect, EffectAttribute } from 'postprocessing';
 import { Uniform, Vector2, type WebGLRenderer, type WebGLRenderTarget } from 'three';
-import { storyStore } from '../../story/store';
+
+/** Параметры линзы, которые эффект читает каждый кадр. */
+export interface LensParams {
+  /** Положение чёрной дыры в UV экрана, 0..1, y вверх */
+  x: number;
+  y: number;
+  /** 0..1 — выкл/вкл эффекта */
+  strength: number;
+  /** Радиус Эйнштейна в долях высоты кадра */
+  radius: number;
+}
 
 /**
  * Гравитационная линза как пост-эффект поверх реального звёздного поля.
@@ -49,8 +59,13 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 
 export class LensingEffect extends Effect {
   private center = new Vector2(0.5, 0.5);
+  private params: LensParams = { x: 0.5, y: 0.5, strength: 0, radius: 0.18 };
 
-  constructor() {
+  /**
+   * @param source читает актуальные параметры (store истории или локальное состояние интерактива);
+   *               пишет в переданный объект и возвращает его, чтобы не выделять память каждый кадр.
+   */
+  constructor(private readonly source: (out: LensParams) => LensParams) {
     super('LensingEffect', fragment, {
       attributes: EffectAttribute.CONVOLUTION,
       blendFunction: BlendFunction.NORMAL,
@@ -64,16 +79,16 @@ export class LensingEffect extends Effect {
   }
 
   override update(_renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget, deltaTime?: number): void {
-    const { lens, lensMass } = storyStore.getState();
+    const p = this.source(this.params);
     const dt = deltaTime ?? 0.016;
     const k = 1 - Math.exp(-dt * 7);
-    this.center.x += (lens.x - this.center.x) * k;
-    this.center.y += (lens.y - this.center.y) * k;
+    this.center.x += (p.x - this.center.x) * k;
+    this.center.y += (p.y - this.center.y) * k;
 
     const u = this.uniforms;
     (u.get('uCenter')!.value as Vector2).copy(this.center);
-    u.get('uRadius')!.value = 0.08 + lensMass * 0.2;
-    u.get('uStrength')!.value = lens.strength;
+    u.get('uRadius')!.value = p.radius;
+    u.get('uStrength')!.value = p.strength;
     u.get('uAspect')!.value = inputBuffer.width / Math.max(1, inputBuffer.height);
   }
 }

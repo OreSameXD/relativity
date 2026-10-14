@@ -28,6 +28,18 @@ button { font: inherit; color: inherit; }
 .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 .simplified { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; }
 
+/* Шапка сайта (общая для истории и статей) */
+.site-header {
+  position: fixed; inset: 0 0 auto 0; z-index: 3;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--space-2) clamp(16px, 4vw, 48px);
+  font-size: 0.875rem; letter-spacing: 0.02em;
+}
+.site-header .brand { font-family: var(--font-display); color: var(--ice); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.site-header nav a { color: var(--text); text-decoration: none; opacity: 0.85; padding: 10px 0; }
+.site-header nav a:hover { color: var(--ice); opacity: 1; }
+
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }

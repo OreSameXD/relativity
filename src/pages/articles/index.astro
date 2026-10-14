@@ -1,10 +1,51 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import '../../styles/article.css';
+
+const articles = (await getCollection('articles')).filter((a) => !a.data.draft).sort((a, b) => a.data.order - b.data.order);
 ---
-<Base title="Статьи — Время относительно" description="Оглавление статей о теории относительности.">
-  <main style="padding: 20vh 24px; max-width: 70ch; margin: 0 auto;">
+<Base title="Статьи — Время относительно" description="Оглавление статей о теории относительности: замедление времени, близнецы, кривизна пространства-времени, гравитационная линза, GPS." ogImage="/og/articles.png" bodyClass="article-page">
+  <header class="site-header">
+    <a class="brand" href="/">Время относительно</a>
+    <nav><a href="/">История</a></nav>
+  </header>
+
+  <main class="list-wrap">
+    <p class="kicker">Оглавление</p>
     <h1>Статьи</h1>
-    <p style="margin-top: 1rem; color: var(--muted)">Оглавление появится на этапе 3.</p>
-    <p style="margin-top: 2rem"><a href="/">← Назад к истории</a></p>
+    <p class="lead">Каждое явление из истории — подробно: как открыли, формулы с подстановкой чисел, интерактив и источники.</p>
+
+    <ol class="list">
+      {articles.map((a) => (
+        <li>
+          <a href={`/articles/${a.id}`}>
+            <span class="num">{String(a.data.order).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="name">{a.data.title}</span>
+              <span class="desc">{a.data.description}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+    {articles.length < 6 && <p class="muted">Остальные статьи появятся по мере готовности.</p>}
+
+    <p style="margin-top: var(--space-5)"><a class="back" href="/">← Назад к истории</a></p>
   </main>
 </Base>
+
+<style>
+  .list-wrap { max-width: 70ch; margin: 0 auto; padding: calc(var(--space-5) + 56px) clamp(16px, 4vw, 48px) var(--space-5); }
+  h1 { font-size: clamp(2rem, 4.5vw, 3.4rem); }
+  .lead { margin-top: var(--space-3); font-size: 1.15rem; color: var(--text); max-width: 56ch; }
+  .list { list-style: none; padding: 0; margin: var(--space-4) 0 0; display: grid; gap: 10px; }
+  .list a { display: grid; grid-template-columns: 3rem 1fr; gap: 12px; padding: 18px 20px; border-radius: var(--radius); border: 1px solid color-mix(in srgb, var(--violet) 30%, transparent); text-decoration: none; color: var(--text); transition: border-color var(--dur-fast), background var(--dur-fast); }
+  .list a:hover { border-color: var(--warm); background: color-mix(in srgb, var(--warm) 6%, transparent); }
+  .list .num { color: var(--warm); }
+  .list .name { display: block; color: var(--ice); font-weight: 600; font-size: 1.1rem; }
+  .list .desc { display: block; margin-top: 4px; color: var(--muted); font-size: 0.95rem; }
+  .muted { margin-top: var(--space-3); color: var(--muted); font-size: 0.9rem; }
+  .back { color: var(--muted); text-decoration: none; }
+  .back:hover { color: var(--ice); }
+</style>

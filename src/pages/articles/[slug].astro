@@ -1,0 +1,32 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Article from '../../layouts/Article.astro';
+
+export async function getStaticPaths() {
+  const all: CollectionEntry<'articles'>[] = (await getCollection('articles'))
+    .filter((a) => !a.data.draft)
+    .sort((a, b) => a.data.order - b.data.order);
+  return all.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, prev: all[i - 1], next: all[i + 1] },
+  }));
+}
+
+const { entry, prev, next } = Astro.props as { entry: CollectionEntry<'articles'>; prev?: CollectionEntry<'articles'>; next?: CollectionEntry<'articles'> };
+const { Content, headings } = await render(entry);
+const d = entry.data;
+---
+<Article
+  title={d.title}
+  description={d.description}
+  phenomenon={d.phenomenon}
+  lead={d.lead}
+  updated={d.updated}
+  slug={entry.id}
+  headings={headings}
+  chapterId={d.chapter}
+  next={next ? { href: `/articles/${next.id}`, name: next.data.phenomenon } : undefined}
+  prev={prev ? { href: `/articles/${prev.id}`, name: prev.data.phenomenon } : undefined}
+>
+  <Content />
+</Article>

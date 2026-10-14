@@ -2,16 +2,6 @@
 #story { position: relative; z-index: 1; }
 #fade { position: fixed; inset: 0; background: var(--bg); opacity: 0; pointer-events: none; z-index: 2; }
 
-.site-header {
-  position: fixed; inset: 0 0 auto 0; z-index: 3;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: var(--space-2) clamp(16px, 4vw, 48px);
-  font-size: 0.875rem; letter-spacing: 0.02em;
-}
-.site-header .brand { font-family: var(--font-display); color: var(--ice); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
-.site-header nav a { color: var(--text); text-decoration: none; opacity: 0.85; padding: 10px 0; }
-.site-header nav a:hover { color: var(--ice); opacity: 1; }
-
 .chapter { position: relative; }
 .copy {
   position: sticky; top: 0; height: 100vh; height: 100dvh;

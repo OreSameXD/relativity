@@ -7,7 +7,18 @@ import { storyStore, useStory } from '../story/store';
 import { LensingEffect } from './effects/LensingEffect';
 
 function Lensing() {
-  const effect = useMemo(() => new LensingEffect(), []);
+  const effect = useMemo(
+    () =>
+      new LensingEffect((out) => {
+        const s = storyStore.getState();
+        out.x = s.lens.x;
+        out.y = s.lens.y;
+        out.strength = s.lens.strength;
+        out.radius = 0.08 + s.lensMass * 0.2;
+        return out;
+      }),
+    [],
+  );
   useEffect(() => {
     if (import.meta.env.DEV) (window as unknown as { __lens: LensingEffect }).__lens = effect;
     return () => effect.dispose();

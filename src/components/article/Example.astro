@@ -1,0 +1,11 @@
+---
+/** Пример подстановки с реальными числами. */
+interface Props {
+  title?: string;
+}
+const { title = 'Подставим числа' } = Astro.props;
+---
+<div class="example">
+  <p class="example-title">{title}</p>
+  <slot />
+</div>

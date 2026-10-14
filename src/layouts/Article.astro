@@ -1,0 +1,97 @@
+---
+import 'katex/dist/katex.min.css';
+import Base from './Base.astro';
+import '../styles/article.css';
+import type { MarkdownHeading } from 'astro';
+
+interface NavLink {
+  href: string;
+  name: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  phenomenon: string;
+  lead: string;
+  updated: Date;
+  slug: string;
+  headings: MarkdownHeading[];
+  chapterId?: string;
+  next?: NavLink;
+  prev?: NavLink;
+}
+
+const { title, description, phenomenon, lead, updated, slug, headings, chapterId, next, prev } = Astro.props;
+const toc = headings.filter((h) => h.depth === 2);
+const backHref = chapterId ? `/#${chapterId}` : '/';
+const updatedText = updated.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={`${title} — Время относительно`} description={description} ogImage={`/og/articles/${slug}.png`} bodyClass="article-page">
+  <header class="site-header">
+    <a class="brand" href="/">Время относительно</a>
+    <nav><a href="/articles">Статьи</a></nav>
+  </header>
+
+  <div class="article-header">
+    <a class="back" href={backHref}>← Назад к истории</a>
+    <p class="kicker">{phenomenon}</p>
+    <h1>{title}</h1>
+    <p class="lead">{lead}</p>
+    <p class="meta">Обновлено {updatedText}</p>
+  </div>
+
+  <div class="article-wrap">
+    <aside class="toc is-desktop" aria-label="Содержание статьи">
+      <p class="toc-title">Содержание</p>
+      <ol>
+        {toc.map((h) => (
+          <li><a href={`#${h.slug}`} data-toc={h.slug}>{h.text}</a></li>
+        ))}
+      </ol>
+    </aside>
+
+    <div>
+      <details class="toc is-mobile">
+        <summary>Содержание</summary>
+        <ol>
+          {toc.map((h) => (
+            <li><a href={`#${h.slug}`}>{h.text}</a></li>
+          ))}
+        </ol>
+      </details>
+
+      <article class="article-body">
+        <slot />
+      </article>
+
+      <nav class="article-nav" aria-label="Навигация по статьям">
+        {next ? (
+          <a href={next.href}><span class="label">Следующее явление →</span><span class="name">{next.name}</span></a>
+        ) : (
+          <a href="/articles"><span class="label">Все статьи →</span><span class="name">Оглавление</span></a>
+        )}
+        <a href={backHref}><span class="label">← Назад к истории</span><span class="name">Глава на главной</span></a>
+      </nav>
+      {prev && <p style="margin-top: 16px; font-size: 0.9rem; color: var(--muted)">Предыдущее: <a href={prev.href} style="color: var(--text)">{prev.name}</a></p>}
+    </div>
+  </div>
+</Base>
+
+<script>
+  // Подсветка текущего раздела в боковом оглавлении
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.toc.is-desktop a[data-toc]'));
+  const targets = links.map((a) => document.getElementById(a.dataset.toc!)).filter(Boolean) as HTMLElement[];
+  if (targets.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          links.forEach((l) => l.classList.toggle('is-active', l.dataset.toc === e.target.id));
+        }
+      },
+      { rootMargin: '-20% 0px -70% 0px' },
+    );
+    targets.forEach((t) => io.observe(t));
+  }
+</script>

@@ -1,0 +1,9 @@
+---
+/** Сноска на источник: [n] со ссылкой на #src-n. */
+interface Props {
+  n: number | number[];
+}
+const { n } = Astro.props;
+const list = Array.isArray(n) ? n : [n];
+---
+<sup>{list.map((i, k) => (<><a href={`#src-${i}`} aria-label={`Источник ${i}`}>[{i}]</a>{k < list.length - 1 ? '' : ''}</>))}</sup>

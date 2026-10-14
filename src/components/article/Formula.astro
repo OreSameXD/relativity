@@ -1,0 +1,14 @@
+---
+/**
+ * Блок формулы. Внутрь: $$...$$, затем <Legend> и <Example>.
+ */
+interface Props {
+  id: string;
+  title: string;
+}
+const { id, title } = Astro.props;
+---
+<section class="formula" id={`formula-${id}`} aria-labelledby={`formula-${id}-title`}>
+  <p class="formula-title" id={`formula-${id}-title`}>{title}</p>
+  <div class="formula-math"><slot /></div>
+</section>

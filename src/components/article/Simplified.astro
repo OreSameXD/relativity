@@ -1,0 +1,8 @@
+---
+/** Мелкая пометка «упрощено» рядом с визуализацией или оценкой. */
+interface Props {
+  text?: string;
+}
+const { text } = Astro.props;
+---
+<p class="simplified">Упрощено{text ? `: ${text}` : ''}</p>
